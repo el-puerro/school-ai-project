@@ -18,7 +18,7 @@ def main():
     if argv[1] == 'train':
         train(argv[2])
     if argv[1] == 'run':
-        run(argv[2])
+        run(argv[2], argv[3], argv[4])
     if len(argv) != 3 and argv[1] != 'gen':
         print('USAGE: main.py {gen,run} <training.csv>')
 
@@ -63,18 +63,18 @@ def generate(temp):
     ## Debug output
     #print(df)
     print('export to CSV...')
-    df.to_csv('training.csv', sep=';', index=False, decimal=',')
+    df.to_csv('training.csv', sep=';', index=False, decimal='.')
 
 
 def train(file: str):
-    block_print()
-    df = pd.read_csv(file, sep=';', decimal=',')
+    #block_print()
+    df = pd.read_csv(file, sep=';', decimal='.')
     # debug
     print(df.dtypes)
 
     # prepare data for machine learning algo
-    feat_tmp = df.drop(columns=['time', 'difftemp'])
-    cat_tmp = df.drop(columns=['time', 'temp'])
+    feat_tmp = df.drop(columns=['boiler'])
+    cat_tmp = df.drop(columns=['target', 'inside', 'outside'])
 
     x = feat_tmp.values
     y = cat_tmp.values
@@ -84,13 +84,16 @@ def train(file: str):
     x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, 
                                                       test_size=0.2)
     
-    # Model creation
-    m = keras.Sequential()
-    
-    # 1st input layer with single neuron, 1st hidden layer with 4 neurons
-    m.add(keras.layers.Dense(5, activation='relu', input_shape=(1,)))
-    # Output layer of the model
-    m.add(keras.layers.Dense(1, activation=None))
+
+    if os.path.exists("model.keras"):
+        m = keras.models.load_model("model.keras")
+    else:
+        # Model creation
+        m = keras.Sequential()
+        # 1st input layer with single neuron, 1st hidden layer with 4 neurons
+        m.add(keras.layers.Dense(5, activation='relu', input_shape=(3,)))
+        # Output layer of the model
+        m.add(keras.layers.Dense(1, activation=None))
 
     m.summary()
     ## input("Press Enter to continue...")
@@ -100,7 +103,7 @@ def train(file: str):
               metrics=[metrics.mean_absolute_error])
 
     # Model training
-    m.fit(x_train, y_train, batch_size=50, epochs=200, 
+    m.fit(x_train, y_train, batch_size=100, epochs=50, 
           validation_data=(x_val, y_val))
 
     # Validate models accuracy
@@ -108,18 +111,20 @@ def train(file: str):
     print(m.evaluate(x_test, y_test))
 
     # more transparent micro-tests
-    more_tests = np.array([20, 19, 18, 17, 16])
-    print(more_tests)
-    print(m.predict(more_tests))
+    #more_tests = np.array([20, 19, 18, 17, 16])
+    #print(more_tests)
+    #print(m.predict(more_tests))
 
     m.save('model.keras')
     print('model exported to "model.keras"')
 
-def run(outtemp: float):
-    block_print()
+
+# 22, 21, 14
+def run(target: int, inside: int, outside: int):
+    #block_print()
     print('Loading Model...')
     m = keras.saving.load_model('model.keras')
-    tmp = m.predict(np.array( [float(outtemp),] ))
+    tmp = m.predict(np.array( [[[float(target)], [float(inside)], [ float(outside)]]]))
     enable_print()
     print(float(tmp[0]))
 
