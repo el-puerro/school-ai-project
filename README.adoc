@@ -8,8 +8,24 @@ NOTE: This project was something that I needed to do for school, so it will not 
 NOTE: Everything inside of the `knn_heizung` folder was done in cooperation with https://gitlab.com/el-puerro[el-puerro]
 
 == Task description
+The task description of our teacher was not the most precise but it basically boils down to this: +
+In your basement you have a boiler that is the heart of your heating in the house. Based on your comwfy temperature(_also called `target`_), the inside temperature(_the actual temperature in the house_) and the outside temperature, the temperature of the boiler should be calculated. +
+Since no real world values were provided, we decided to use a bit of +++<s>2+2 equals 4 minus one that's 3</s>+++  *quick maths* and good old "randomness" to generate sample data that we can use. + 
+Here are some boundaries, that we have decided for the values:
+
+* Target: Always between 16 and 24
+* Inside: Always between (Target - 5) and (Target + 5)
+* Outside: Whatever the weather data fetched gives us
+* Boiler: Based on 35, can vary in both ends.
+
++++<s>Yes, everything could have been done with just math, but the teacher decided that a neural needs to be involved in this crap</s>+++
 
 == Pieces/Programs
 === api-stuffs (kotlin, ktor)
+Used to control the python program
+
 === datagen (golang)
+Used to generate data that will be used to train the Neural Network
+
 === neural network/`knn_heizung` (python, tensorflow)
+The Neural network.
