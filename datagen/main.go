@@ -14,6 +14,8 @@ import (
 var BOILER_BASE = 35.0
 var BOILER_MUL = 2.0
 var OUTSIDE_MUL = 1.5
+var SAMPLE_DATA_SIZE = 1000000
+var outsideTemps []float64
 
 type HourlyWeatherData struct {
 	Time []string  `json:"time"`
@@ -24,15 +26,9 @@ type WeatherData struct {
 	Hourly HourlyWeatherData `json:"hourly"`
 }
 
-type CleanWeatherData struct {
-	Time string
-	Temp float64
-}
-
 func main() {
-	var target float64
-	target = float64((16 + rand.Intn(8)))
-	outsideTemps := getOutsideTemps()
+	target := getNewTargetTemp()
+	outsideTemps = getOutsideTemps()
 
 	f, err := os.Create("data.csv")
 	if err != nil {
@@ -44,13 +40,12 @@ func main() {
 		panic(err)
 	}
 
-	for i := 0; i < 1000000; i++ {
-
-		if i%1000 == 0 {
-			target = float64((16 + rand.Intn(8)))
+	for i := 0; i < SAMPLE_DATA_SIZE; i++ {
+		if i%1000 == 0 { //Reset target every 1000 entries
+			target = getNewTargetTemp()
 		}
 
-		outside := outsideTemps[rand.Intn(len(outsideTemps))]
+		outside := getRandomOutsideTemp()
 		inside := getInsideTemp(target)
 
 		_, err := f.WriteString(fmt.Sprintf("%f;%f;%f;%f\n", target, inside, outside, calcBoilerTemp(target, inside, outside)))
@@ -62,16 +57,24 @@ func main() {
 	f.Close()
 }
 
+func getNewTargetTemp() float64 {
+	return float64((16 + rand.Intn(8)))
+}
+
 func calcBoilerTemp(target, inside, outside float64) float64 {
 	return (BOILER_BASE + ((inside - outside) * BOILER_MUL) + ((target - inside) * OUTSIDE_MUL))
 }
 
 func getInsideTemp(target float64) float64 {
-	if rand.Intn(2)%2 == 0 {
+	if rand.Intn(2)%2 == 0 { //Flip a "coin" to decide if it's either plus or minus
 		return (target - float64(rand.Intn(5)))
 	} else {
 		return (target + float64(rand.Intn(5)))
 	}
+}
+
+func getRandomOutsideTemp() float64 {
+	return outsideTemps[rand.Intn(len(outsideTemps))]
 }
 
 func getOutsideTemps() []float64 {
@@ -82,11 +85,11 @@ func getOutsideTemps() []float64 {
 
 	bodyBytes, err := io.ReadAll(resp.Body)
 
-	var dirtyData WeatherData
-	err = json.Unmarshal(bodyBytes, &dirtyData)
+	var data WeatherData
+	err = json.Unmarshal(bodyBytes, &data)
 	if err != nil {
 		panic(err)
 	}
 
-	return dirtyData.Hourly.Temp
+	return data.Hourly.Temp
 }
