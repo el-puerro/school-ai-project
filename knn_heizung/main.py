@@ -19,8 +19,6 @@ def main():
         train(argv[2])
     if argv[1] == 'run':
         run(argv[2], argv[3], argv[4])
-    if len(argv) != 3 and argv[1] != 'gen':
-        print('USAGE: main.py {gen,run} <training.csv>')
 
 # Disable
 def block_print():
