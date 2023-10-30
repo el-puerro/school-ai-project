@@ -14,7 +14,7 @@ import (
 var BOILER_BASE = 35.0
 var BOILER_MUL = 2.0
 var OUTSIDE_MUL = 1.5
-var SAMPLE_DATA_SIZE = 1000000
+var SAMPLE_DATA_SIZE = 100000
 var outsideTemps []float64
 
 type HourlyWeatherData struct {
