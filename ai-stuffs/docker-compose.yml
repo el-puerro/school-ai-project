@@ -1,0 +1,11 @@
+version: "3"
+services:
+  api:
+    restart: unless-stopped
+    image: gradle:8.4.0-jdk11
+    working_dir: /home/gradle/project
+    command: gradle runFatJar
+    ports:
+      - "31432:8080"
+    volumes:
+      - "./ai-stuffs:/home/gradle/project"
