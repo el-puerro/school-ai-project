@@ -38,3 +38,4 @@ out/
 ### Custom ###
 *.csv
 ai-stuffs/knn_heizung/
+ai-datagen
