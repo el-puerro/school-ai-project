@@ -28,14 +28,14 @@ type WeatherData struct {
 
 func main() {
 	target := getNewTargetTemp()
-	outsideTemps = getOutsideTemps()
+	outsideTemps = fillOutsideTemps()
 
 	f, err := os.Create("data.csv")
 	if err != nil {
 		panic(err)
 	}
 
-	_, err = f.WriteString("target;inside;outside;boiler\n")
+	_, err = f.WriteString("target;inside;outside;boiler\n") //Write CSV Header
 	if err != nil {
 		panic(err)
 	}
@@ -48,7 +48,7 @@ func main() {
 		outside := getRandomOutsideTemp()
 		inside := getInsideTemp(target)
 
-		_, err := f.WriteString(fmt.Sprintf("%f;%f;%f;%f\n", target, inside, outside, calcBoilerTemp(target, inside, outside)))
+		_, err := f.WriteString(fmt.Sprintf("%f;%f;%f;%f\n", target, inside, outside, calcBoilerTemp(target, inside, outside))) //Write Data
 		if err != nil {
 			panic(err)
 		}
@@ -77,7 +77,7 @@ func getRandomOutsideTemp() float64 {
 	return outsideTemps[rand.Intn(len(outsideTemps))]
 }
 
-func getOutsideTemps() []float64 {
+func fillOutsideTemps() []float64 {
 	resp, err := http.Get("https://api.open-meteo.com/v1/forecast?latitude=51.435146&longitude=6.762692&hourly=temperature_2m&timezone=Europe%2FBerlin&past_days=92&forecast_days=16")
 	if err != nil {
 		panic(err)
