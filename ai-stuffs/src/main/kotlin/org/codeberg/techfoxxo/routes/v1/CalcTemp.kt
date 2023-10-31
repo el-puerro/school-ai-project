@@ -14,9 +14,6 @@ fun Route.CalcTemp(){
         val target = call.request.queryParameters["target"]
         val inside = call.request.queryParameters["inside"]
         val outside = call.request.queryParameters["outside"]
-        val BOILER_BASE = 35.0
-        val BOILER_MUL = 2.0
-        val OUTSIDE_MUL = 2.0
 
         if (target == null || target == "") {
             call.respond(HttpStatusCode.BadRequest)
