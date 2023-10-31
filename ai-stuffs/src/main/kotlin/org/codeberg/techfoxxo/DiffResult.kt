@@ -4,7 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DiffResult(
-    val currTemp: Double?,
-    val diff: Double?,
+    val target: Double?,
+    val inside: Double?,
+    val outside: Double?,
+    val boiler: Double?,
     val error: String?
 )
