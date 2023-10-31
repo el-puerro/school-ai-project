@@ -17,7 +17,7 @@ fun Route.GenTrainData(){
             return@get
         }
 
-        val proc = ProcessBuilder("python", "main.py", "gen", call.request.queryParameters["usertemp"])
+        val proc = ProcessBuilder("python", "main.py", "gen")
             .directory(File(System.getProperty("user.dir") + "/knn_heizung"))
             .redirectOutput(ProcessBuilder.Redirect.PIPE)
             .redirectError(ProcessBuilder.Redirect.PIPE)

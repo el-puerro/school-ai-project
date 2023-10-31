@@ -9,12 +9,12 @@ import java.io.File
 
 fun Route.Train(){
     post("train"){
-        if (!File(System.getProperty("user.dir") + "/knn_heizung/training.csv").exists()){
+        if (!File(System.getProperty("user.dir") + "/knn_heizung/data.csv").exists()){
             call.respond(HttpStatusCode.BadRequest, TrainResponse(1, "Please generate data first."))
             return@post
         }
 
-        val proc = ProcessBuilder("python", "main.py", "train", "training.csv")
+        val proc = ProcessBuilder("python", "main.py", "train")
             .directory(File(System.getProperty("user.dir") + "/knn_heizung"))
             .redirectOutput(ProcessBuilder.Redirect.PIPE)
             .redirectError(ProcessBuilder.Redirect.PIPE)

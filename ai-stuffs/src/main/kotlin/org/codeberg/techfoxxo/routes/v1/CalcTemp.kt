@@ -8,19 +8,27 @@ import org.codeberg.techfoxxo.DiffResult
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-fun Route.GetDiff(){
-    get("diff"){
-        if (call.request.queryParameters["target"] == null || call.request.queryParameters["target"] == "") {
+fun Route.CalcTemp(){
+    get("calc"){
+
+        val target = call.request.queryParameters["target"]
+        val inside = call.request.queryParameters["inside"]
+        val outside = call.request.queryParameters["outside"]
+        val BOILER_BASE = 35.0
+        val BOILER_MUL = 2.0
+        val OUTSIDE_MUL = 2.0
+
+        if (target == null || target == "") {
             call.respond(HttpStatusCode.BadRequest)
             return@get
         }
 
-        if (call.request.queryParameters["inside"] == null || call.request.queryParameters["inside"] == "") {
+        if (inside == null || inside == "") {
             call.respond(HttpStatusCode.BadRequest)
             return@get
         }
 
-        if (call.request.queryParameters["outside"] == null || call.request.queryParameters["outside"] == "") {
+        if (outside == null || outside == "") {
             call.respond(HttpStatusCode.BadRequest)
             return@get
         }
@@ -34,9 +42,9 @@ fun Route.GetDiff(){
         proc.waitFor(60, TimeUnit.SECONDS)
 
         if (proc.exitValue() != 0){
-            call.respond(DiffResult(null, null, proc.errorStream.bufferedReader().readText()))
+            call.respond(DiffResult(null, null, null, null, proc.errorStream.bufferedReader().readText()))
         } else {
-            call.respond(DiffResult(call.request.queryParameters["currtemp"]?.toDoubleOrNull(), proc.inputStream.bufferedReader().readText().toDoubleOrNull(), null))
+            call.respond(DiffResult(target.toDouble(), inside.toDouble(), outside.toDouble(), proc.inputStream.bufferedReader().readText().toDoubleOrNull(), null))
         }
 
     }
