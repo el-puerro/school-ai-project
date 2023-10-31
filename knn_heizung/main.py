@@ -14,9 +14,9 @@ import json
 
 def main():
     if argv[1] == 'gen':
-        generate(argv[2])
+        generate()
     if argv[1] == 'train':
-        train(argv[2])
+        train()
     if argv[1] == 'run':
         run(argv[2], argv[3], argv[4])
 
@@ -29,46 +29,14 @@ def enable_print():
     sys.stdout = sys.__stdout__
 
 # generate training data
-def generate(temp):
+def generate():
     block_print()
-    # TODO: Make station selection for weather data dynamic
-    stat_url = 'https://api.open-meteo.com/v1/forecast?latitude=51.435146&longitude=6.762692&hourly=temperature_2m&timezone=Europe%2FBerlin&past_days=92&forecast_days=16'
-
-    # prepare fetched data as dataframe
-    print('request weather data for 108 days...')
-    response = requests.get(stat_url)
-
-    print('reading weather data...')
-    df = pd.DataFrame()
-    df['time'] = response.json()['hourly']['time']
-    df['temp'] = response.json()['hourly']['temperature_2m']
-    df.dropna(axis=0, inplace=True)
-    ## Debug
-    #print(df)
-
-    # generate diff temperatures from user input
-    # usertemp = input('Wunschtemperatur in °C:')
-    usertemp = float(temp)
-
-    print('generate deltas...')
-    arr = []
-
-    for i in df.index:
-        arr.append(round(usertemp - df['temp'][i], 2))
-
-    df['difftemp'] = arr
-
-    ## Debug output
-    #print(df)
-    print('export to CSV...')
-    df.to_csv('training.csv', sep=';', index=False, decimal='.')
+    os.system("./../datagen/ai-datagen")
 
 
-def train(file: str):
+def train():
     #block_print()
-    df = pd.read_csv(file, sep=';', decimal='.')
-    # debug
-    print(df.dtypes)
+    df = pd.read_csv("data.csv", sep=';', decimal='.')
 
     # prepare data for machine learning algo
     feat_tmp = df.drop(columns=['boiler'])
@@ -82,19 +50,18 @@ def train(file: str):
     x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, 
                                                       test_size=0.2)
     
-
+    #Check if model already exists
     if os.path.exists("model.keras"):
         m = keras.models.load_model("model.keras")
     else:
         # Model creation
         m = keras.Sequential()
-        # 1st input layer with single neuron, 1st hidden layer with 4 neurons
+        # 1st input layer with single neuron, 1st hidden layer with ? neurons
         m.add(keras.layers.Dense(5, activation='relu', input_shape=(3,)))
         # Output layer of the model
         m.add(keras.layers.Dense(1, activation=None))
 
     m.summary()
-    ## input("Press Enter to continue...")
 
     # compile model
     m.compile(optimizer='adam', loss='mse',
@@ -108,22 +75,16 @@ def train(file: str):
     #_, acc = 
     print(m.evaluate(x_test, y_test))
 
-    # more transparent micro-tests
-    #more_tests = np.array([20, 19, 18, 17, 16])
-    #print(more_tests)
-    #print(m.predict(more_tests))
-
     m.save('model.keras')
     print('model exported to "model.keras"')
 
 
-# 22, 21, 14
 def run(target: int, inside: int, outside: int):
     #block_print()
     print('Loading Model...')
     m = keras.saving.load_model('model.keras')
-    tmp = m.predict(np.array( [[[float(target)], [float(inside)], [ float(outside)]]]))
-    enable_print()
+    tmp = m.predict(np.array([[[float(target)], [float(inside)], [float(outside)]]]))
+    #enable_print()
     print(float(tmp[0]))
 
 if __name__ == '__main__':

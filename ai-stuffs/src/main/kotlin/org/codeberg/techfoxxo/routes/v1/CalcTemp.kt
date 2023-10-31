@@ -10,12 +10,22 @@ import java.util.concurrent.TimeUnit
 
 fun Route.GetDiff(){
     get("diff"){
-        if (call.request.queryParameters["currtemp"] == null || call.request.queryParameters["currtemp"] == "") {
+        if (call.request.queryParameters["target"] == null || call.request.queryParameters["target"] == "") {
             call.respond(HttpStatusCode.BadRequest)
             return@get
         }
 
-        val proc = ProcessBuilder("python", "main.py", "run", call.request.queryParameters["currtemp"])
+        if (call.request.queryParameters["inside"] == null || call.request.queryParameters["inside"] == "") {
+            call.respond(HttpStatusCode.BadRequest)
+            return@get
+        }
+
+        if (call.request.queryParameters["outside"] == null || call.request.queryParameters["outside"] == "") {
+            call.respond(HttpStatusCode.BadRequest)
+            return@get
+        }
+
+        val proc = ProcessBuilder("python", "main.py", "run", call.request.queryParameters["target"], call.request.queryParameters["inside"], call.request.queryParameters["outside"])
             .directory(File(System.getProperty("user.dir") + "/knn_heizung"))
             .redirectOutput(ProcessBuilder.Redirect.PIPE)
             .redirectError(ProcessBuilder.Redirect.PIPE)
