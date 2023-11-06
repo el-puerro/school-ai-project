@@ -11,14 +11,14 @@ import java.util.concurrent.TimeUnit
 
 fun Route.GenTrainData(){
     get("gen"){
-        
+
         val proc = ProcessBuilder("python", "main.py", "gen")
             .directory(File(System.getProperty("user.dir") + "/knn_heizung"))
             .redirectOutput(ProcessBuilder.Redirect.PIPE)
             .redirectError(ProcessBuilder.Redirect.PIPE)
             .start()
 
-        proc.waitFor(60, TimeUnit.SECONDS)
+        proc.waitFor()
         if (proc.exitValue() != 0){
             call.respond(HttpStatusCode.InternalServerError, TrainResponse(1, proc.errorStream.bufferedReader().readText()))
         } else {
