@@ -1,0 +1,11 @@
+version: '3'
+services:
+  webui:
+    restart: unless-stopped
+    command: "npm start"
+    working_dir: /home/node/app
+    image: node:latest
+    ports:
+      - "8081:80"
+    volumes:
+      - "./home/node/app"
