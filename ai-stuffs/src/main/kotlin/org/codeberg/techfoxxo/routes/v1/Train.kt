@@ -20,6 +20,13 @@ fun Route.Train(){
             .redirectError(ProcessBuilder.Redirect.PIPE)
             .start()
 
-        call.respond(TrainResponse(0, "Dataset is training, please wait 60 seconds before sending the next request."))
+
+        proc.waitFor()
+        if (proc.exitValue() != 0){
+            call.respond(TrainResponse(proc.exitValue(), proc.errorStream.bufferedReader().readText()))
+        } else {
+            call.respond(TrainResponse(0, proc.inputStream.bufferedReader().readText()))
+        }
+
     }
 }

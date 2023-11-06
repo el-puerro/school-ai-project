@@ -18,7 +18,7 @@ fun Route.GenTrainData(){
             .redirectError(ProcessBuilder.Redirect.PIPE)
             .start()
 
-        proc.waitFor(60, TimeUnit.SECONDS)
+        proc.waitFor()
         if (proc.exitValue() != 0){
             call.respond(HttpStatusCode.InternalServerError, TrainResponse(1, proc.errorStream.bufferedReader().readText()))
         } else {
