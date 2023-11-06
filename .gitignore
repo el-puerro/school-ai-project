@@ -40,3 +40,5 @@ out/
 ai-stuffs/knn_heizung/
 ai-stuffs/knn_heizung
 ai-datagen
+webui/node_modules/
+*.nsjproj

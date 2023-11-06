@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Heizungssteuerung</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="script.js"></script>
+    <script defer src="data-management.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Heizungssteuerung</h1>
+    </header>
+    <main>
+        <section class="temperature-display">
+            <h2>Aktuelle Temperatur: <span id="current-temp">19</span>&deg;C</h2>
+            <h2>Zieltemperatur: <span id="target-temp">--</span>&deg;C</h2>
+        </section>
+        <section class="temperature-chart">
+            <h2>Temperaturverlauf</h2>
+            <div id="chart-container">
+                <canvas id="temp-chart"></canvas>
+            </div>
+        </section>
+
+        <button id="settings-btn">Einstellungen</button>
+    </main>
+    <footer>
+        <p>&copy; 2023 Heizungssteuerung Projekt</p>
+    </footer>
+</body>
+</html>
