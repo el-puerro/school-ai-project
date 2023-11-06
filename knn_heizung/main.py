@@ -80,11 +80,11 @@ def train():
 
 
 def run(target: int, inside: int, outside: int):
-    #block_print()
+    block_print()
     print('Loading Model...')
     m = keras.saving.load_model('model.keras')
     tmp = m.predict(np.array([[[float(target)], [float(inside)], [float(outside)]]]))
-    #enable_print()
+    enable_print()
     print(float(tmp[0]))
 
 if __name__ == '__main__':
