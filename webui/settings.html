@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Einstellungen - Heizungssteuerung</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="settings.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Einstellungen</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Zieltemperatur &auml;ndern</h2>
+            <form id="temp-form">
+                <label for="target-temp-input">Neue Zieltemperatur:</label>
+                <input type="number" id="target-temp-input" name="target-temp" min="10" max="30" required>
+                <input type="submit" value="Speichern">
+            </form>
+        </section>
+        <button id="back-btn">Zur&uuml;ck zur Startseite</button>
+        <section class="password-change">
+            <h2>Passwort &auml;ndern</h2>
+            <form id="password-form">
+                <label for="old-password">Altes Passwort:</label>
+                <input type="password" id="old-password" required>
+                <label for="new-password">Neues Passwort:</label>
+                <input type="password" id="new-password" required>
+                <input type="submit" value="Passwort &auml;ndern">
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Heizungssteuerung Projekt</p>
+    </footer>
+    <script>
+        // �berpr�fen, ob der Benutzer eingeloggt ist
+        if (!sessionStorage.getItem('user')) {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
