@@ -11,14 +11,16 @@ from keras import metrics
 from sys import argv
 import requests
 import json
+import logging
 
 def main():
-    if argv[1] == 'gen':
-        generate()
-    if argv[1] == 'train':
-        train()
-    if argv[1] == 'run':
-        run(argv[2], argv[3], argv[4])
+    with open('log.txt', 'w') as sys.stdout:
+        if argv[1] == 'gen':
+            generate()
+        if argv[1] == 'train':
+            train()
+        if argv[1] == 'run':
+            run(argv[2], argv[3], argv[4])
 
 # Disable
 def block_print():
@@ -35,7 +37,9 @@ def generate():
 
 
 def train():
-    #block_print()
+    block_print()
+
+
     df = pd.read_csv("data.csv", sep=';', decimal='.')
 
     # prepare data for machine learning algo
@@ -80,11 +84,11 @@ def train():
 
 
 def run(target: int, inside: int, outside: int):
-    #block_print()
+    block_print()
     print('Loading Model...')
     m = keras.saving.load_model('model.keras')
     tmp = m.predict(np.array([[[float(target)], [float(inside)], [float(outside)]]]))
-    #enable_print()
+    enable_print()
     print(float(tmp[0]))
 
 if __name__ == '__main__':
