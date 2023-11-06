@@ -12,11 +12,6 @@ import java.util.concurrent.TimeUnit
 fun Route.GenTrainData(){
     get("gen"){
 
-        if (call.request.queryParameters["usertemp"] == null || call.request.queryParameters["usertemp"] == "") {
-            call.respond(HttpStatusCode.BadRequest)
-            return@get
-        }
-
         val proc = ProcessBuilder("python", "main.py", "gen")
             .directory(File(System.getProperty("user.dir") + "/knn_heizung"))
             .redirectOutput(ProcessBuilder.Redirect.PIPE)
