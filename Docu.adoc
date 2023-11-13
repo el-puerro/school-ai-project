@@ -1,0 +1,127 @@
+= Documentation 
+TechFoxxo <techfoxxo at protonmail dot com>
+2023-11-23
+:toc:
+
+== Project Goal
+
+
+== Project Components
+
+'''
+
+=== API 
+Prg. Languages: `kotlin` +
+Folder: `ai-stuffs` +
+Developer: `Maikel`
+
+==== API Endpoints
+Base Path: `http://<service>:8080/v1` 
+
+
+.Generate Learningdata
+[sidebar, options=unbreakable]
+--
+URI: `/gen` +
+*Result:* +
+Kotlin Dataclass: `TrainResponse` +
+Type: `Object` +
+Structure:
+[cols="4*^,6"]
+|===
+| Name | Datatype | Kotlin Datatype | null possible | Description
+| `code` | `Int` | `Int` | N | The exit code of the golang process
+| `message` | `String` | `String` | N | The `stdout` or `stderr` of the golang process
+|===
+
+.Response Example
+[source, json]
+----
+{
+    "code": 0,
+    "message": "Process successfully finished."
+}
+----
+--
+
+.Train Model
+[sidebar, options=unbreakable]
+--
+URI: `/train` +
+*Result:* +
+Kotlin Dataclass: `TrainResponse` +
+Type: `Object` +
+Structure:
+[cols="4*^,6"]
+|===
+| Name | Datatype | Kotlin Datatype | null possible | Description
+| `code` | `Int` | `Int` | N | The exit code of the python process
+| `message` | `String` | `String` | N | The `stdout` or `stderr` of the python process
+|===
+
+.Response Example
+[source, json]
+----
+{
+    "code": 0,
+    "message": "Here could be your ad!"
+}
+----
+--
+
+.Generate Boiler Temperature
+[sidebar, options=unbreakable]
+--
+URI: `/calc` +
+Possible arguments:
+[cols="2*^,6"]
+|===
+| Type | Name | Description
+| Query | `inside` | Current indoor temperature
+| Query | `outside` | Current outdoor temperature
+| Query | `target` | The indoor temperature that should be
+|===
+
+*Result:* +
+Kotlin Dataclass: `DiffResult` +
+Type: `Object` +
+Structure:
+[cols="4*^,6"]
+|===
+| Name | Datatype | Kotlin Datatype | null possible | Description
+| `target` | `Double` | `Double?` | Y | Value provided by Query Param `target`
+| `inside` | `Double` | `Double?` | Y | Value provided by Query Param `inside`
+| `outside` | `Double` | `Double?` | Y | Value provided by Query Param `outside`
+| `boiler` | `Double` | `Double?` | Y | The temperature the boiler should be set to
+| `error` | `String` | `String?` | Y| Error message. Will be null if there was no error
+|===
+
+.Response Example
+[source, json]
+----
+{
+    "target": 21.0,
+    "inside": 17.0,
+    "outside": 6.0,
+    "boiler": 71.0,
+    "error": null
+}
+----
+--
+
+'''
+
+=== AI Learningdata Generation
+Prg. Languages: `golang` +
+Folder: `datagen` + 
+Developer: `Maikel` 
+
+=== AI
+Prg. Languages: `python` +
+Folder: `knn_heizung` +
+Developer: `Steven`
+
+=== WebUI
+Prg. Languages: `html,js,css` +
+Folder: `webui` +
+Developer: `Constantin`
