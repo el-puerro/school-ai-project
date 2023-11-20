@@ -130,8 +130,37 @@ Prg. Languages: `python` +
 Folder: `knn_heizung` +
 Developer: `Steven`
 
+==== Training & Architecture
 The Artificial Neural Network has the following structure:
 image::AI-structure-example.png[]
+
+The Artificial Neural Network has three neurons as input layer - one for each
+feature (target-, inside- and outside-temperature). 
+
+There is a hidden layer with five neurons for further processing. The hidden
+layer is neccessary because the AI needs to be able to pick up a certain
+threshold of complexity from the dataset.
+
+Since only one label is expected, there is only one neuron in the output layer.
+
+Since this ANN is supposed to solve a regression problem as opposed to a 
+(multi-)classification problem, the mean squeare error is used as the loss
+function, and the absolute error is used as the metric for the model.
+
+The Mean Square Error function is supplied by the keras package and works by
+using the difference between the models predictions and the ground truth, which
+is then squared and averaged out across the whole dataset.
+
+==== Training and Running
+
+Training and running is logically seperate for operation reasons. The model is
+trained using the generated training data from  the `datagen` program, with 100
+rows at a time and 50 iterations over the whole dataset, after which the model
+is then exported.
+
+For running the AI, the trained model is loaded and fed with the three input
+values. After about 3 seconds, a single float value, the predicted label, should
+be returned.
 
 === WebUI
 Prg. Languages: `html,js,css` +
