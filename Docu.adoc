@@ -130,6 +130,9 @@ Prg. Languages: `python` +
 Folder: `knn_heizung` +
 Developer: `Steven`
 
+The Artificial Neural Network has the following structure:
+image::AI-structure-example.png[]
+
 === WebUI
 Prg. Languages: `html,js,css` +
 Folder: `webui` +
