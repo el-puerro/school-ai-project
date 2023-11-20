@@ -4,12 +4,7 @@ TechFoxxo <techfoxxo at protonmail dot com>
 :stem:
 :toc:
 
-== Project Goal
-
 == Project Components
-
-'''
-
 === API 
 Prg. Languages: `kotlin` +
 Folder: `ai-stuffs` +
@@ -107,7 +102,7 @@ Structure:
 ----
 --
 
-'''
+<<<
 
 === AI Learningdata Generation
 Prg. Languages: `golang` +
@@ -116,8 +111,19 @@ Developer: `Maikel` +
 Usage: `./ai-datagen`
 
 Formula for boiler temperature: +
+`Boiler = (BoilerBase\((Inside-Outside)*BoilerMul) + ((Target-Inside)*OutsideMul))`
 
-stem:[sqrt(4) = 2]
+Generates the amount of entries defined in variable `SAMPLE_DATA_SIZE`. The generated data will be exported into a CSV
+File with the following structure:
+.CSV Structure, semicolon seperated
+|====
+| *target* | *inside* | *outside* | *boiler*
+| 21.0000 | 20.0000 | 23.9000 | 28.7000
+| 21.0000 | 21.0000 | 12.1000 | 52.8000
+| 21.0000 | 21.0000 | 13.5000 | 50.0000
+| ... | ... | ... | ...
+|====
+
 
 === AI
 Prg. Languages: `python` +
