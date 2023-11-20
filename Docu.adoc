@@ -1,10 +1,10 @@
 = Documentation 
 TechFoxxo <techfoxxo at protonmail dot com>
 2023-11-23
+:stem:
 :toc:
 
 == Project Goal
-
 
 == Project Components
 
@@ -13,11 +13,8 @@ TechFoxxo <techfoxxo at protonmail dot com>
 === API 
 Prg. Languages: `kotlin` +
 Folder: `ai-stuffs` +
-Developer: `Maikel`
-
-==== API Endpoints
-Base Path: `http://<service>:8080/v1` 
-
+Developer: `Maikel` +
+Base URL: `http://<service>:8080/v1`
 
 .Generate Learningdata
 [sidebar, options=unbreakable]
@@ -50,6 +47,7 @@ Structure:
 URI: `/train` +
 *Result:* +
 Kotlin Dataclass: `TrainResponse` +
+
 Type: `Object` +
 Structure:
 [cols="4*^,6"]
@@ -93,7 +91,7 @@ Structure:
 | `inside` | `Double` | `Double?` | Y | Value provided by Query Param `inside`
 | `outside` | `Double` | `Double?` | Y | Value provided by Query Param `outside`
 | `boiler` | `Double` | `Double?` | Y | The temperature the boiler should be set to
-| `error` | `String` | `String?` | Y| Error message. Will be null if there was no error
+| `error` | `String` | `String?` | Y | Error message. Will be null if there was no error
 |===
 
 .Response Example
@@ -114,7 +112,12 @@ Structure:
 === AI Learningdata Generation
 Prg. Languages: `golang` +
 Folder: `datagen` + 
-Developer: `Maikel` 
+Developer: `Maikel` +
+Usage: `./ai-datagen`
+
+Formula for boiler temperature: +
+
+stem:[sqrt(4) = 2]
 
 === AI
 Prg. Languages: `python` +
