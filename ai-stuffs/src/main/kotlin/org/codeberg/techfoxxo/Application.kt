@@ -1,5 +1,6 @@
 package org.codeberg.techfoxxo
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -14,6 +15,11 @@ fun main() {
 fun Application.module() {
     install(CORS) {
         anyHost()
+        allowMethod(HttpMethod.Post)
+        allowMethod(HttpMethod.Get)
+        allowHeader(HttpHeaders.AccessControlAllowOrigin)
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.AccessControlAllowHeaders)
     }
     v1()
 }
