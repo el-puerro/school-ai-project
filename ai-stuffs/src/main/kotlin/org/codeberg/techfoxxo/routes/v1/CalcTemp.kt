@@ -42,7 +42,7 @@ fun Route.CalcTemp(){
             call.respond(DiffResult(null, null, null, null, proc.errorStream.bufferedReader().readText()))
         } else {
             call.respond(DiffResult(target.toDouble(), inside.toDouble(), outside.toDouble(), proc.inputStream.bufferedReader().readText().toDoubleOrNull(), null))
-        }
+       }
 
     }
 }
